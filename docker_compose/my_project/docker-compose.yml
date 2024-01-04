@@ -3,8 +3,8 @@ services:
   postgres:
     image: postgres:13
     container_name: postgres
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     env_file:
       - ./movies_admin/.env
     volumes:
@@ -19,6 +19,7 @@ services:
       - ./movies_admin/.env
     volumes:
       - ./movies_admin/staticfiles:/static:ro
+      - ./movies_admin/run_uwsgi.sh:/run_uwsgi.sh
     depends_on:
       - postgres
 

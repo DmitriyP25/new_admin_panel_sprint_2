@@ -86,15 +86,16 @@ class Person(TimeStampedMixin, UUIDMixin):
         verbose_name_plural = _('persons')
 
 
+class PersonFilmworkRole(models.TextChoices):
+    """FilmworkType described options."""
+
+    ACTOR = 'actor', _('actor')
+    DIRECTOR = 'director', _('director')
+    WRITER = 'writer', _('writer')
+
+
 class PersonFilmwork(UUIDMixin):
     """PersonFilmwork described personFilmwork table."""
-
-    class PersonFilmworkRole(models.TextChoices):
-        """FilmworkType described options."""
-
-        ACTOR = 'ACT', _('actor')
-        DIRECTOR = 'DIR', _('director')
-        WRITER = 'WRT', _('writer')
 
     film_work = models.ForeignKey('filmwork', on_delete=models.CASCADE)
     person = models.ForeignKey('person', on_delete=models.CASCADE)
@@ -114,14 +115,15 @@ class PersonFilmwork(UUIDMixin):
         verbose_name_plural = _('persons')
 
 
+class FilmworkType(models.TextChoices):
+    """FilmworkType described options."""
+
+    MOVIE = 'MV', _('movie')
+    TV_SHOW = 'TS', _('tv show')
+
+
 class Filmwork(TimeStampedMixin, UUIDMixin):
     """Filmwork described filmwork table."""
-
-    class FilmworkType(models.TextChoices):
-        """FilmworkType described options."""
-
-        MOVIE = 'MV', _('movie')
-        TV_SHOW = 'TS', _('tv show')
 
     title = models.CharField(_('title'), blank=False, max_length=255)
     description = models.TextField(_('description'), blank=True)
