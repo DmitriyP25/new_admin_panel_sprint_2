@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 
-from movies.models import Filmwork
+from movies.models import Filmwork, PersonFilmworkRole
 
 
 class MoviesApiMixin:
@@ -27,9 +27,9 @@ class MoviesApiMixin:
             'type',
         ).prefetch_related('persons').annotate(
             genres=ArrayAgg('genres__name', distinct=True),
-            actors=ArrayAgg('persons__full_name', distinct=True, filter=Q(personfilmwork__role='actor')),
-            directors=ArrayAgg('persons__full_name', distinct=True, filter=Q(personfilmwork__role='director')),
-            writers=ArrayAgg('persons__full_name', distinct=True, filter=Q(personfilmwork__role='writer')),
+            actors=ArrayAgg('persons__full_name', distinct=True, filter=Q(personfilmwork__role=PersonFilmworkRole.ACTOR.value)),  # Надеюсь я правильно понял совет про использование класса в качестве enum 
+            directors=ArrayAgg('persons__full_name', distinct=True, filter=Q(personfilmwork__role=PersonFilmworkRole.DIRECTOR.value)),
+            writers=ArrayAgg('persons__full_name', distinct=True, filter=Q(personfilmwork__role=PersonFilmworkRole.WRITER.value)),
         )
 
         return queryset
